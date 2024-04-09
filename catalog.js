@@ -5,7 +5,7 @@ ${recipiesArray.map(recipeTemplate)}
 `;
 
 const recipeTemplate = (recipe) => html`
-        <article class="preview">
+        <article class="preview" id="${recipe._id}">
             <div class="title">
                 <h2>${recipe.name}</h2>
             </div>
