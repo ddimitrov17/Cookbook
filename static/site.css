@@ -58,9 +58,9 @@ a.active {
 }
 
 #user {
-    display: inline-block;
+    display: none;
 }
 
 #guest {
-    display: inline-block;
+    display: none;
 }
