@@ -1,4 +1,4 @@
-import { html, render} from './lib.js';
+import { html, render} from '../lib.js';
 
 const catalog = (recipiesArray) => html`
 ${recipiesArray.map(recipeTemplate)}
@@ -40,14 +40,14 @@ const detailsTemplate=(recipeDetails) => html`
         </article>`
 
 export async function catalogRender() {
-    const response = await fetch('http://localhost:3030/jsonstore/cookbook/recipes');
+    const response = await fetch('http://localhost:3030/data/recipes?select=_id%2Cname%2Cimg');
     const recipies = await response.json();
     let recipiesArray = Object.values(recipies);
     render(catalog(recipiesArray));
 }
 
 export async function detailsRender(id) {
-    const response=await fetch(`http://localhost:3030/jsonstore/cookbook/details/${id}`);
+    const response=await fetch(`http://localhost:3030/data/recipes/${id}`);
     let recipeDetails=await response.json();
     render(detailsTemplate(recipeDetails));
 } 
