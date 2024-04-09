@@ -1,4 +1,5 @@
 import {html,render} from '../lib.js';
+import { updateNav } from '../util.js';
 
 const registerTemplate=() => html`
         <article>

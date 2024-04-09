@@ -24,6 +24,6 @@ export function createSubmitHandler(callback) {
 export function updateNav() {
     const userData = getUserData();
 
-    document.querySelector('nav .guest').style.display = userData ? 'none' : 'block';
-    document.querySelector('nav .user').style.display = userData ? 'block' : 'none';
+    document.querySelector('#guest').style.display = userData ? 'none' : 'inline-block';
+    document.querySelector('#user').style.display = userData ? 'inline-block' : 'none';
 }
