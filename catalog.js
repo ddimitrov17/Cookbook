@@ -1,4 +1,4 @@
-import { html, render } from './lib.js';
+import { html, render} from './lib.js';
 
 const catalog = (recipiesArray) => html`
 ${recipiesArray.map(recipeTemplate)}
@@ -16,7 +16,7 @@ const recipeTemplate = (recipe) => html`
 
 const detailsTemplate=(recipeDetails) => html`
         <article>
-            <h2>Title</h2>
+            <h2>${recipeDetails.name}</h2>
             <div class="band">
                 <div class="thumb">
                     <img src="${recipeDetails.img}">
@@ -48,7 +48,6 @@ export async function catalogRender() {
 
 export async function detailsRender(id) {
     const response=await fetch(`http://localhost:3030/jsonstore/cookbook/details/${id}`);
-    const recipeDetails=await response.json();
+    let recipeDetails=await response.json();
     render(detailsTemplate(recipeDetails));
-    page.redirect('/details/' + id);
 } 
