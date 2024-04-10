@@ -51,3 +51,5 @@ export async function detailsRender(id) {
     let recipeDetails=await response.json();
     render(detailsTemplate(recipeDetails));
 } 
+//http://localhost:3030/data/recipes/8f414b4f-ab39-4d36-bedb-2ad69da9c830
+// TODO : FIX INGREDIENTS - MAP
