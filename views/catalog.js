@@ -37,6 +37,8 @@ const detailsTemplate=(recipeDetails) => html`
                 <p>${recipeDetails.steps[1]}</p>
                 <p>${recipeDetails.steps[2]}</p>
             </div>
+            <button>\u270E Edit</button>
+            <button>\u2716 Delete</button>
         </article>`
 
 export async function catalogRender() {
