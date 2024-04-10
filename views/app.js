@@ -1,7 +1,7 @@
-import { catalogRender, detailsRender } from './catalog.js';
+import { catalogRender } from './catalog.js';
 import { page } from '../lib.js';
 import { showRegister } from './register.js';
-import { clearUserData, updateNav } from '../util.js';
+import { updateNav } from '../util.js';
 import { showLogin } from './login.js';
 import { logout } from '../users.js';
 
