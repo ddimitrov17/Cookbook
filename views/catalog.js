@@ -1,4 +1,6 @@
-import { html, render} from '../lib.js';
+import { html, render,page} from '../lib.js';
+import { del } from '../request.js';
+import { getUserData } from '../util.js';
 
 const catalog = (recipiesArray) => html`
 ${recipiesArray.map(recipeTemplate)}
@@ -14,7 +16,7 @@ const recipeTemplate = (recipe) => html`
             </div>
         </article>`
 
-const detailsTemplate=(recipeDetails) => html`
+const detailsTemplate=(recipeDetails,owner,onDelete) => html`
         <article>
             <h2>${recipeDetails.name}</h2>
             <div class="band">
@@ -37,8 +39,14 @@ const detailsTemplate=(recipeDetails) => html`
                 <p>${recipeDetails.steps[1]}</p>
                 <p>${recipeDetails.steps[2]}</p>
             </div>
-            <button>\u270E Edit</button>
-            <button>\u2716 Delete</button>
+            ${owner ? html`<div class="controls">
+            <button>
+            <a href="/edit/${recipeDetails._id}">
+            \u270E Edit
+            </a>
+            </button>
+            <button @click=${onDelete}>\u2716 Delete</button>
+            </div>` : ''}
         </article>`
 
 export async function catalogRender() {
@@ -51,7 +59,18 @@ export async function catalogRender() {
 export async function detailsRender(id) {
     const response=await fetch(`http://localhost:3030/data/recipes/${id}`);
     let recipeDetails=await response.json();
-    render(detailsTemplate(recipeDetails));
+    const user=getUserData();
+    const isUserLogged=!!user;
+    const owner=isUserLogged && recipeDetails._ownerId==user._id;
+    render(detailsTemplate(recipeDetails,owner,onDelete));
+
+    async function onDelete() {
+        const choice=confirm('Are you sure you want to delete the recipe?');
+        if (choice) {
+            await del(`/data/recipes/${id}`);
+            page.redirect('/');
+        }
+    }
 } 
 //http://localhost:3030/data/recipes/8f414b4f-ab39-4d36-bedb-2ad69da9c830
 // TODO : FIX INGREDIENTS - MAP
