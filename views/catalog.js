@@ -27,18 +27,20 @@ const detailsTemplate=(recipeDetails,owner,onDelete) => html`
                 <div class="ingredients">
                     <h3>Ingredients:</h3>
                     <ul>
-                        <li>${recipeDetails.ingredients[0]}</li>
+                        ${recipeDetails.ingredients.map(ingredient => html`<li>${ingredient}</li>`)}
+                        <!-- <li>${recipeDetails.ingredients[0]}</li>
                         <li>${recipeDetails.ingredients[1]}</li>
                         <li>${recipeDetails.ingredients[2]}</li>
-                        <li>${recipeDetails.ingredients[3]}</li>
+                        <li>${recipeDetails.ingredients[3]}</li> -->
                     </ul>
                 </div>
             </div>
             <div class="description">
                 <h3>Preparation:</h3>
-                <p>${recipeDetails.steps[0]}</p>
+                ${recipeDetails.steps.map(step => html`<p>${step}</p>`)}
+                <!-- <p>${recipeDetails.steps[0]}</p>
                 <p>${recipeDetails.steps[1]}</p>
-                <p>${recipeDetails.steps[2]}</p>
+                <p>${recipeDetails.steps[2]}</p> -->
             </div>
             ${owner ? html`<div class="controls">
             <button>
