@@ -1,4 +1,4 @@
-import { catalogRender } from './catalog.js';
+import { catalogRender, detailsRender } from './catalog.js';
 import { page } from '../lib.js';
 import { showRegister } from './register.js';
 import { updateNav } from '../util.js';
@@ -13,6 +13,7 @@ page('/register',showRegister);
 page('/login',showLogin);
 page('/create',showCreate);
 page('/edit/:id',showEdit);
+page('/details/:id',detailsRender);
 page.start();
 
 document.getElementById('logoutBtn').addEventListener('click', () => {

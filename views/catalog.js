@@ -7,7 +7,7 @@ ${recipiesArray.map(recipeTemplate)}
 `
 
 const recipeTemplate = (recipe) => html`
-        <article class="preview" id="${recipe._id}" @click=${() => detailsRender(recipe._id)}>
+        <article class="preview" @click=${() => detailsRender(recipe._id)}>
             <div class="title">
                 <h2>${recipe.name}</h2>
             </div>
@@ -64,11 +64,17 @@ export async function detailsRender(id) {
     const owner=isUserLogged && recipeDetails._ownerId==user._id;
     render(detailsTemplate(recipeDetails,owner,onDelete));
 
+
+const deleteTemplate=() => html`
+    <article>
+    <h2>Recipe deleted</h2>
+    </article>`
+    
     async function onDelete() {
         const choice=confirm('Are you sure you want to delete the recipe?');
         if (choice) {
             await del(`/data/recipes/${id}`);
-            page.redirect('/');
+            render(deleteTemplate());
         }
     }
 } 
