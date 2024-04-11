@@ -2,6 +2,7 @@ import {html,render,page} from '../lib.js';
 import { login } from '../users.js';
 import { createSubmitHandler, updateNav } from '../util.js';
 
+const root=document.querySelector('main');
 const loginTemplate=(onLogin) => html`
         <article>
             <h2>Login</h2>
@@ -13,7 +14,7 @@ const loginTemplate=(onLogin) => html`
         </article>`;
 
 export function showLogin() {
-    render(loginTemplate(createSubmitHandler(onLogin)));
+    render(loginTemplate(createSubmitHandler(onLogin)),root);
 }
 
 async function onLogin(data) {

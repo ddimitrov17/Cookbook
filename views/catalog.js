@@ -2,6 +2,7 @@ import { html, render,page} from '../lib.js';
 import { del } from '../request.js';
 import { getUserData } from '../util.js';
 
+const root=document.querySelector('main');
 const catalog = (recipiesArray) => html`
 ${recipiesArray.map(recipeTemplate)}
 `
@@ -53,7 +54,7 @@ export async function catalogRender() {
     const response = await fetch('http://localhost:3030/data/recipes?select=_id%2Cname%2Cimg');
     const recipies = await response.json();
     let recipiesArray = Object.values(recipies);
-    render(catalog(recipiesArray));
+    render(catalog(recipiesArray),root);
 }
 
 export async function detailsRender(id) {
@@ -62,19 +63,19 @@ export async function detailsRender(id) {
     const user=getUserData();
     const isUserLogged=!!user;
     const owner=isUserLogged && recipeDetails._ownerId==user._id;
-    render(detailsTemplate(recipeDetails,owner,onDelete));
+    render(detailsTemplate(recipeDetails,owner,onDelete),root);
 
 
 const deleteTemplate=() => html`
     <article>
     <h2>Recipe deleted</h2>
     </article>`
-    
+
     async function onDelete() {
         const choice=confirm('Are you sure you want to delete the recipe?');
         if (choice) {
             await del(`/data/recipes/${id}`);
-            render(deleteTemplate());
+            render(deleteTemplate(),root);
         }
     }
 } 

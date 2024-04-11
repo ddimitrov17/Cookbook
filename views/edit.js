@@ -2,6 +2,7 @@ import {html,render,page} from '../lib.js';
 import { get, put } from '../request.js';
 import { createSubmitHandler } from '../util.js';
 
+const root=document.querySelector('main');
 const editTemplate=(currentRecipe,onEdit) => html`
             <article>
                 <h2>Edit Recipe</h2>
@@ -19,7 +20,7 @@ const editTemplate=(currentRecipe,onEdit) => html`
 export async function showEdit(ctx) {
     const id=ctx.params.id;
     const currentRecipe=await get('/data/recipes/' + id);
-    render(editTemplate(currentRecipe,createSubmitHandler(onEdit)));
+    render(editTemplate(currentRecipe,createSubmitHandler(onEdit)),root);
 
     async function onEdit(data) {
         const name=data['name'];

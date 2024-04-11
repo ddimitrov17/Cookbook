@@ -2,6 +2,7 @@ import {html,render,page} from '../lib.js';
 import { post } from '../request.js';
 import { createSubmitHandler } from '../util.js';
 
+const root=document.querySelector('main');
 const createTemplate=(onCreate) => html`
         <article>
             <h2>New Recipe</h2>
@@ -15,7 +16,7 @@ const createTemplate=(onCreate) => html`
         </article>`;
 
 export async function showCreate() {
-    render(createTemplate(createSubmitHandler(onCreate)));
+    render(createTemplate(createSubmitHandler(onCreate)),root);
 }
 
 async function onCreate(data) {

@@ -6,9 +6,12 @@ import { showLogin } from './login.js';
 import { logout } from '../users.js';
 import { showCreate } from './create.js';
 import { showEdit } from './edit.js';
+import { showHome } from './home.js';
 
 updateNav();
-page('/', catalogRender);
+
+page('/',showHome);
+page('/catalog', catalogRender);
 page('/register',showRegister);
 page('/login',showLogin);
 page('/create',showCreate);

@@ -2,6 +2,7 @@ import {html,render,page} from '../lib.js';
 import { register } from '../users.js';
 import { createSubmitHandler, updateNav } from '../util.js';
 
+const root=document.querySelector('main');
 const registerTemplate=(onRegister) => html`
         <article>
             <h2>Register</h2>
@@ -14,7 +15,7 @@ const registerTemplate=(onRegister) => html`
         </article>`;
 
 export function showRegister() {
-    render(registerTemplate(createSubmitHandler(onRegister)));
+    render(registerTemplate(createSubmitHandler(onRegister)),root);
 }
 
 async function onRegister(data) {

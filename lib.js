@@ -3,10 +3,13 @@ import { classMap } from './node_modules/lit-html/directives/class-map.js';
 import { styleMap } from './node_modules/lit-html/directives/style-map.js';
 import page from './node_modules/page/page.mjs';
 
-const root = document.querySelector('main');
+// const root = document.querySelector('main');
 
-function render(templateResult) {
-    renderBase(templateResult,root);
+// function render(templateResult) {
+//     renderBase(templateResult,root);
+// }
+function render(template,targetElement) {
+    renderBase(template,targetElement);
 }
 
 export {
