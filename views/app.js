@@ -13,7 +13,7 @@ page('/register',showRegister);
 page('/login',showLogin);
 page('/create',showCreate);
 page('/edit/:id',showEdit);
-page('/details/:id',detailsRender);
+// page('/details/:id',detailsRender);
 page.start();
 
 document.getElementById('logoutBtn').addEventListener('click', () => {
