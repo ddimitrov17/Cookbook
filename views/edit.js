@@ -36,6 +36,6 @@ export async function showEdit(ctx) {
             ingredients: ingredients,
             steps: steps
         });
-        page.redirect('/');
+        page.redirect('/catalog');
     }
 }

@@ -33,5 +33,5 @@ async function onCreate(data) {
         ingredients: ingredients,
         steps: steps
     });
-    page.redirect('/');
+    page.redirect('/catalog');
 }
