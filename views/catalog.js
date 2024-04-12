@@ -1,11 +1,29 @@
-import { html, render,page} from '../lib.js';
-import { del } from '../request.js';
+import { html, render, page } from '../lib.js';
+import { del, get } from '../request.js';
 import { getUserData } from '../util.js';
 
-const root=document.querySelector('main');
+const root = document.querySelector('main');
+let totalRecipies = await get('/data/recipes?count');
+let totalPages = Math.ceil(totalRecipies / 5);
+let currentPage = 0;
 const catalog = (recipiesArray) => html`
 ${recipiesArray.map(recipeTemplate)}
 `
+
+const headerTemplate = (currentPage, totalPages) => html`
+        <header class="section-title">
+            ${currentPage > 1 ? html`<a href="" class="pager" @click=${catalogRender}>< Prev</a>` : ''}
+            <a class="pager">Page ${currentPage} of ${totalPages}</a>
+            ${currentPage == totalPages ? '' : html`<a href="" class="pager" @click=${catalogRender}>> Next</a>`}
+        </header>`;
+
+const footerTemplate = (currentPage, totalPages) => html`
+        <footer class="section-title">
+            ${currentPage > 1 ? html`<a href="" class="pager" @click=${catalogRender}>< Prev</a>` : ''}
+            <a class="pager">Page ${currentPage} of ${totalPages}</a>
+            ${currentPage == totalPages ? '' : html`<a href="" class="pager" @click=${catalogRender}>> Next</a>`}
+        </footer>`;
+
 
 const recipeTemplate = (recipe) => html`
         <article class="preview" @click=${() => detailsRender(recipe._id)}>
@@ -17,7 +35,7 @@ const recipeTemplate = (recipe) => html`
             </div>
         </article>`
 
-const detailsTemplate=(recipeDetails,owner,onDelete) => html`
+const detailsTemplate = (recipeDetails, owner, onDelete) => html`
         <article>
             <h2>${recipeDetails.name}</h2>
             <div class="band">
@@ -52,34 +70,44 @@ const detailsTemplate=(recipeDetails,owner,onDelete) => html`
             </div>` : ''}
         </article>`
 
-export async function catalogRender() {
-    const response = await fetch('http://localhost:3030/data/recipes?select=_id%2Cname%2Cimg');
-    const recipies = await response.json();
+export async function catalogRender(event) {
+    let anchorClicked = event.target;
+    if (anchorClicked != undefined) {
+        anchorClicked = anchorClicked.textContent;
+        if (anchorClicked.includes('Next')) {
+            currentPage++;
+        } else {
+            currentPage--;
+        }
+    }
+    const recipies = await get(`/data/recipes?select=_id%2Cname%2Cimg&offset=${currentPage * 5}&pageSize=5`);
     let recipiesArray = Object.values(recipies);
-    render(catalog(recipiesArray),root);
+    const combinedTemplate = html`
+    ${headerTemplate(currentPage + 1, totalPages)}
+    ${catalog(recipiesArray)}
+    ${footerTemplate(currentPage + 1, totalPages)}`;
+    render(combinedTemplate, root);
 }
 
 export async function detailsRender(id) {
-    const response=await fetch(`http://localhost:3030/data/recipes/${id}`);
-    let recipeDetails=await response.json();
-    const user=getUserData();
-    const isUserLogged=!!user;
-    const owner=isUserLogged && recipeDetails._ownerId==user._id;
-    render(detailsTemplate(recipeDetails,owner,onDelete),root);
+    const recipeDetails = await get(`/data/recipes/${id}`);
+    const user = getUserData();
+    const isUserLogged = !!user;
+    const owner = isUserLogged && recipeDetails._ownerId == user._id;
+    render(detailsTemplate(recipeDetails, owner, onDelete), root);
 
 
-const deleteTemplate=() => html`
+    const deleteTemplate = () => html`
     <article>
     <h2>Recipe deleted</h2>
     </article>`
 
     async function onDelete() {
-        const choice=confirm('Are you sure you want to delete the recipe?');
+        const choice = confirm('Are you sure you want to delete the recipe?');
         if (choice) {
             await del(`/data/recipes/${id}`);
-            render(deleteTemplate(),root);
+            render(deleteTemplate(), root);
         }
     }
-} 
-//http://localhost:3030/data/recipes/8f414b4f-ab39-4d36-bedb-2ad69da9c830
-// TODO : FIX INGREDIENTS - MAP
+}
+
