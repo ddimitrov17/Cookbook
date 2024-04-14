@@ -1,5 +1,5 @@
 import { html, render, page } from '../lib.js';
-import { del, get } from '../request.js';
+import { del, get, post } from '../request.js';
 import { getUserData } from '../util.js';
 
 const root = document.querySelector('main');
@@ -89,12 +89,46 @@ export async function catalogRender(event) {
     render(combinedTemplate, root);
 }
 
+const commentsTemplate=(isUserLogged,addComment,commentsContentArray,recipeName) => html`
+    ${isUserLogged ? html`  
+    <article class="comment">
+        <h2>New comment</h2>
+            <form id="commentForm" @submit=${addComment}>
+                <textarea class="new-comment" placeholder="Type comment"></textarea>
+                <input type="submit" value="Add comment">
+            </form>
+    </article>
+    <header class="comment">Comments for ${recipeName}</header>
+    ${commentsContentArray.map(([comment,user]) => eachCommentTemplate(comment,user))}` : html`<header class="comment">Comments for ${recipeName}</header>
+    ${commentsContentArray.map(([comment,user]) => eachCommentTemplate(comment,user))}`}`
+
+const eachCommentTemplate=(comment,userName) => html`
+    <li class="comments">
+        <header>${userName}</header>
+        <p class="comment">${comment}</p>
+    </li>`
+
 export async function detailsRender(id) {
     const recipeDetails = await get(`/data/recipes/${id}`);
+    const recipeName=recipeDetails.name;
     const user = getUserData();
     const isUserLogged = !!user;
     const owner = isUserLogged && recipeDetails._ownerId == user._id;
-    render(detailsTemplate(recipeDetails, owner, onDelete), root);
+    async function addComment() {
+        let commentContent=document.querySelector('textarea[class="new-comment"]').value;
+        await post('/data/comments',{
+            recipeId: id,
+            content: commentContent,
+            postedBy: user.email
+        });
+    }
+    const comments=await get(`/data/comments?where=recipeId%3D%22${id}%22`);
+    let commentsContentArray=comments.map(commentObjectProperty => commentObjectProperty=[commentObjectProperty.content,commentObjectProperty.postedBy]);
+    const detailsCombinedTemplate=html`
+        ${detailsTemplate(recipeDetails, owner, onDelete)}
+        ${commentsTemplate(isUserLogged,addComment,commentsContentArray,recipeName)}
+    `
+    render(detailsCombinedTemplate, root);
 
 
     const deleteTemplate = () => html`
