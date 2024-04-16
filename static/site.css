@@ -120,3 +120,35 @@ a:visited {
 .pager {
     margin: 0 8px;
 }
+
+.actionLink {
+    display: inline-block;
+    background-color: salmon;
+    padding: 8px 16px;
+    margin: 0 8px;
+    text-decoration: none;
+    color: black;
+}
+
+.actionLink:visited {
+    color: black;
+}
+
+.actionLink:hover {
+    background-color: #6c8b47;
+    color: white;
+}
+
+#searchForm {
+    padding: 8px 16px;
+    text-align: center;
+}
+
+#searchForm input[type="text"] {
+    position: static;
+    text-align: left;
+}
+
+#searchForm input[type="submit"] {
+    display: inline-block;
+}

@@ -9,6 +9,14 @@ let currentPage = 0;
 const catalog = (recipiesArray) => html`
 ${recipiesArray.map(recipeTemplate)}
 `
+//value=${search || ''}
+const searchBarTemplate=(onSearch) => html`
+    <div class="section-title">
+        <form id="searchForm" @submit=${onSearch}>
+            <input type="text" name="search">
+            <input type="submit" value="Search">
+        </form>
+    </div>`;
 
 const headerTemplate = (currentPage, totalPages) => html`
         <header class="section-title">
@@ -83,6 +91,7 @@ export async function catalogRender(event) {
     const recipies = await get(`/data/recipes?select=_id%2Cname%2Cimg&offset=${currentPage * 5}&pageSize=5`);
     let recipiesArray = Object.values(recipies);
     const combinedTemplate = html`
+    ${searchBarTemplate(onSearch)}
     ${headerTemplate(currentPage + 1, totalPages)}
     ${catalog(recipiesArray)}
     ${footerTemplate(currentPage + 1, totalPages)}`;
@@ -143,5 +152,11 @@ export async function detailsRender(id) {
             render(deleteTemplate(), root);
         }
     }
+}
+
+async function onSearch() {
+    const searchValue=document.querySelector('input[name="search"]').value;
+    const searchResult=await get(`/data/recipes?where=name%20LIKE%20%22${searchValue}%2`);
+    debugger
 }
 
