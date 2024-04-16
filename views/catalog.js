@@ -154,9 +154,10 @@ export async function detailsRender(id) {
     }
 }
 
-async function onSearch() {
+async function onSearch(e) {
+    e.preventDefault();
     const searchValue=document.querySelector('input[name="search"]').value;
-    const searchResult=await get(`/data/recipes?where=name%20LIKE%20%22${searchValue}%2`);
-    debugger
+    const searchResult=await get(`/data/recipes?where=name%20LIKE%20%22${searchValue}%22`);
+    render(catalog(searchResult),root);
 }
 
