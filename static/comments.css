@@ -8,11 +8,15 @@
 }
 
 li.comments {
+    border: 1px solid black;
+    border-radius: 15px;
+    padding: 25px;
     display: block !important;
     width: 720px !important;
     margin: 32px auto 32px auto !important;
     box-shadow: 8px 8px 8px 0 rgba(0, 0, 0, 0.2), 12px 12px 20px 0 rgba(0, 0, 0, 0.19) !important;
     border-radius: 16px !important;
+    border-color: aliceblue;
 }
 
 .comment {
@@ -21,6 +25,7 @@ li.comments {
 
 p.comment {
     padding: 16px !important;
+    border-radius: 10px;
 }
 
 header.comment {
